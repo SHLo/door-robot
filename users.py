@@ -1,7 +1,7 @@
 import json
 import os
 from common import face_client
-from lib.face_api import face_client
+from lib.azure_api import face_client
 import logging
 
 logger = logging.getLogger('__name__')

@@ -3,8 +3,8 @@ import cv2
 import logging
 import io
 from users import users
-import faces
-from faces import update_face_boxes
+import bounding_box
+from bounding_box import update_face_boxes, update_obj_boxes
 
 logger = logging.getLogger('__name__')
 
@@ -42,8 +42,9 @@ class Robot:
             frame, img = self.get_cap_img(cap)
 
             update_face_boxes(img)
+            update_obj_boxes(img)
 
-            self.draw_bounding_boxes(frame, faces.face_boxes)
+            self.draw_bounding_boxes(frame, bounding_box.face_boxes + bounding_box.obj_boxes)
 
             cv2.imshow('robot vision', frame)
             
