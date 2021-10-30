@@ -45,24 +45,6 @@ class Users:
                 user['face_id'] = faces[0].face_id
         
         self.save()
-    
-
-    def indentify_faces(self, stream):
-        faces = get_faces(stream)
-
-        known = []
-        unknown = []
-
-        for face in faces:
-            group = unknown
-            if face.face_id in self.face_id_map:
-                group = known
-            group.append(face)
-        
-        return known, unknown
-            
-
-
 
 users = Users()
 
