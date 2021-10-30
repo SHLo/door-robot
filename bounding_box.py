@@ -1,7 +1,7 @@
 import time
 import os
 import io
-from lib.azure_api import face_client, computervision_client
+from azure_api import face_client, computervision_client
 from users import users
 import logging
 

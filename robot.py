@@ -27,7 +27,6 @@ class Robot:
 
 
     def draw_bounding_boxes(self, frame, boxes):
-        #print(boxes)
         for box in boxes:
             start, end = box.position
             cv2.rectangle(frame, start, end, box.color, box.thickness)
@@ -48,7 +47,7 @@ class Robot:
 
             cv2.imshow('robot vision', frame)
             
-            if cv2.waitKey(5) & 0xFF == ord('q'):
+            if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
         
         cap.release()
