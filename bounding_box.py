@@ -57,10 +57,6 @@ def update_face_boxes(img):
 
             face_boxes.append(box)
     
-    except Exception as e:
-        if str(e) in ('(FaceNotFound) Face is not found.', '(BadArgument) Face ID is invalid.'):
-            logger.error('face id')
-    
     finally:
         return
 
