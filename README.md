@@ -21,7 +21,7 @@ requirements for runtime environment
 
 ## Robot Power On
 
-```python[3] main.py```
+```python[3] main.py poweron```
 
 * when there are people at your door, the robot will recognize their faces and label them with bounding boxes
 * when there is package at your door, the robot will recognize it and annotate it with a bounding boxe
