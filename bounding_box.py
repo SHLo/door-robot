@@ -4,6 +4,8 @@ import io
 from azure_api import face_client, computervision_client
 from users import users
 import logging
+import firebase
+import json
 
 logger = logging.getLogger('__name__')
 
@@ -27,6 +29,9 @@ face_boxes = []
 
 obj_last_call = time.time()
 obj_boxes = []
+
+people = []
+packages = 0
 
 def update_face_boxes(img):
     global face_last_call
@@ -56,6 +61,15 @@ def update_face_boxes(img):
                     break
 
             face_boxes.append(box)
+        
+        new_people = [{'name': face_box.label} for face_box in face_boxes]
+
+        global people
+
+        if new_people != people:
+            people = new_people
+            data = json.dumps(people)
+            firebase.update_db('people', data)
     
     finally:
         return
@@ -87,6 +101,15 @@ def update_obj_boxes(img):
             box.label = 'package'
 
             obj_boxes.append(box)
+        
+        new_packages = len(obj_boxes)
+
+        global packages
+
+        if new_packages != packages:
+            packages = new_packages
+            data = packages
+            firebase.update_db('packages', data)
     
     finally:
         return

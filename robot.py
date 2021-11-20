@@ -8,6 +8,7 @@ from bounding_box import update_face_boxes, update_obj_boxes
 
 logger = logging.getLogger('__name__')
 
+
 class Robot:
     def __init__(self):
         pass
@@ -17,22 +18,21 @@ class Robot:
         if not read_success:
             logger.error('failed to read capture')
             return
-        
+
         encode_success, im_buf_arr = cv2.imencode('.jpg', frame)
         if not encode_success:
             logger.error('failed to encode image')
             return
-        
-        return frame, im_buf_arr
 
+        return frame, im_buf_arr
 
     def draw_bounding_boxes(self, frame, boxes):
         for box in boxes:
             start, end = box.position
             cv2.rectangle(frame, start, end, box.color, box.thickness)
             x, y = start
-            cv2.putText(frame, box.label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, box.color, box.thickness)
-
+            cv2.putText(frame, box.label, (x, y - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, box.color, box.thickness)
 
     def power_on(self):
         cap = cv2.VideoCapture(0)
@@ -43,14 +43,16 @@ class Robot:
             update_face_boxes(img)
             update_obj_boxes(img)
 
-            self.draw_bounding_boxes(frame, bounding_box.face_boxes + bounding_box.obj_boxes)
+            self.draw_bounding_boxes(
+                frame, bounding_box.face_boxes + bounding_box.obj_boxes)
 
             cv2.imshow('robot vision', frame)
-            
-            if cv2.waitKey(100) & 0xFF == ord('q'):
+
+            if cv2.waitKey(300) & 0xFF == ord('q'):
                 break
-        
+
         cap.release()
         cv2.destroyAllWindows()
+
 
 robot = Robot()

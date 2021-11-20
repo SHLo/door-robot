@@ -2,3 +2,4 @@ python-dotenv
 opencv-python
 azure-cognitiveservices-vision-face
 azure-cognitiveservices-vision-computervision
+requests
