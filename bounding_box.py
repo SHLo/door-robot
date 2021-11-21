@@ -33,6 +33,7 @@ obj_boxes = []
 people = []
 packages = 0
 
+
 def update_face_boxes(img):
     global face_last_call
 
@@ -42,7 +43,7 @@ def update_face_boxes(img):
 
     face_last_call = now
     global face_boxes
-    
+
     try:
         faces = face_client.face.detect_with_stream(io.BytesIO(img))
         face_boxes = []
@@ -51,7 +52,8 @@ def update_face_boxes(img):
             box.color = (0, 0, 255)
             face_rectangle = face.face_rectangle
             left, top = face_rectangle.left, face_rectangle.top
-            right, bottom = face_rectangle.left + face_rectangle.width, face_rectangle.top + face_rectangle.height
+            right, bottom = face_rectangle.left + \
+                face_rectangle.width, face_rectangle.top + face_rectangle.height
             box.position = ((left, top), (right, bottom))
             box.label = 'stranger'
             for user in users.users:
@@ -61,7 +63,7 @@ def update_face_boxes(img):
                     break
 
             face_boxes.append(box)
-        
+
         new_people = [{'name': face_box.label} for face_box in face_boxes]
 
         global people
@@ -70,7 +72,7 @@ def update_face_boxes(img):
             people = new_people
             data = json.dumps(people)
             firebase.update_db('people', data)
-    
+
     finally:
         return
 
@@ -84,14 +86,14 @@ def update_obj_boxes(img):
 
     obj_last_call = now
     global obj_boxes
-    
+
     try:
         objs = computervision_client.detect_objects_in_stream(io.BytesIO(img))
         obj_boxes = []
         for obj in objs.objects:
             if obj.confidence < 0.5 or obj.object_property not in ('Box', 'Office supplies'):
                 continue
-            
+
             box = BoundingBox()
             box.color = (255, 0, 0)
             obj_rectangle = obj.rectangle
@@ -101,15 +103,15 @@ def update_obj_boxes(img):
             box.label = 'package'
 
             obj_boxes.append(box)
-        
+
         new_packages = len(obj_boxes)
 
         global packages
 
         if new_packages != packages:
             packages = new_packages
-            data = packages
+            data = json.dumps(packages)
             firebase.update_db('packages', data)
-    
+
     finally:
         return
